@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PublicStackParamsList } from '@/routes';
+import { PublicStackParamsList } from '@/routes/PublicRoutes';
 
 export function Login() {
 
