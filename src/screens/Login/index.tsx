@@ -1,20 +1,19 @@
-import { Text, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
-import { TextInput } from "react-native-gesture-handler";
 import { DismissKeyboardView } from "@/components/DismissKeyboardView";
+import { LoginForm } from "./LoginForm";
 
 export function Login() {
   const navigation =
     useNavigation<StackNavigationProp<PublicStackParamsList>>();
   return (
     <DismissKeyboardView>
-      <Text>Login</Text>
-      <TextInput placeholder="Email" className="h-12 w-full bg-gray-500" />
-      <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-        <Text>Register</Text>
-      </TouchableOpacity>
+      <View className="w-[82%] flex-1 self-center">
+        <LoginForm />
+      </View>
     </DismissKeyboardView>
   );
 }
