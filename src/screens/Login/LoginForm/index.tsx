@@ -24,16 +24,17 @@ export function LoginForm() {
       <Input
         name="email"
         control={control}
-        label="Email"
-        placeholder="Email"
+        label="EMAIL"
+        placeholder="email@example.com"
         leftIconName="mail-outline"
       />
       <Input
         name="password"
         control={control}
-        label="Password"
-        placeholder="Password"
+        label="PASSWORD"
+        placeholder="Your password"
         leftIconName="lock-outline"
+        secureTextEntry={true}
       />
     </View>
   );

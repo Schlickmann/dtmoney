@@ -1,4 +1,4 @@
-import { Control, Controller, FieldValues, Path } from "react-hook-form";
+import { useRef, useState } from "react";
 import {
   Text,
   TextInput,
@@ -7,9 +7,10 @@ import {
   View,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { colors } from "@/shared/colors";
-import { useRef, useState } from "react";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import clsx from "clsx";
+
+import { colors } from "@/shared/colors";
 
 interface InputProps<T extends FieldValues> extends TextInputProps {
   control: Control<T>;
@@ -23,9 +24,11 @@ export function Input<T extends FieldValues>({
   name,
   leftIconName,
   label,
+  secureTextEntry,
   ...props
 }: InputProps<T>) {
   const [isFocused, setIsFocused] = useState(false);
+  const [showText, setShowText] = useState(secureTextEntry);
   const inputRef = useRef<TextInput>(null);
 
   const checkFocus = () => {
@@ -66,7 +69,7 @@ export function Input<T extends FieldValues>({
             <TextInput
               ref={inputRef}
               className={clsx(
-                "w-full text-base text-white",
+                "flex-1 text-base text-white",
                 isFocused && "text-accent-brand"
               )}
               onChangeText={onChange}
@@ -76,8 +79,19 @@ export function Input<T extends FieldValues>({
               }
               onFocus={checkFocus}
               onEndEditing={checkFocus}
+              secureTextEntry={showText}
               {...props}
             />
+
+            {secureTextEntry && (
+              <TouchableOpacity onPress={() => setShowText(!showText)}>
+                <MaterialIcons
+                  name={showText ? "visibility" : "visibility-off"}
+                  size={24}
+                  color={isFocused ? colors["accent-brand"] : colors.gray[600]}
+                />
+              </TouchableOpacity>
+            )}
           </TouchableOpacity>
         </View>
       )}
