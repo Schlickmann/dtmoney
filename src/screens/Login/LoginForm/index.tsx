@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -37,7 +37,18 @@ export function LoginForm() {
         leftIconName="lock-outline"
         secureTextEntry={true}
       />
-      <Button iconName="arrow-forward">Login</Button>
+      <View className="mt-8 min-h-[250px] flex-1 justify-between gap-6">
+        <Button>Login</Button>
+
+        <View>
+          <Text className="mb-6 text-base text-gray-300">
+            Don't have an account?
+          </Text>
+          <Button mode="outlined" iconName="arrow-forward">
+            Register
+          </Button>
+        </View>
+      </View>
     </View>
   );
 }
