@@ -6,20 +6,24 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 
-export type LoginFormData = {
+export type RegisterFormData = {
   email: string;
+  name: string;
   password: string;
+  confirmPassword: string;
 };
 
-export function LoginForm() {
+export function RegisterForm() {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<LoginFormData>({
+  } = useForm<RegisterFormData>({
     defaultValues: {
       email: "",
+      name: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -28,6 +32,13 @@ export function LoginForm() {
 
   return (
     <View className="w-full flex-1 gap-4">
+      <Input
+        name="name"
+        control={control}
+        label="NAME"
+        placeholder="Your name"
+        leftIconName="person-outline"
+      />
       <Input
         name="email"
         control={control}
@@ -43,20 +54,28 @@ export function LoginForm() {
         leftIconName="lock-outline"
         secureTextEntry={true}
       />
-      <View className="mt-8 min-h-[250px] flex-1 justify-between gap-6">
-        <Button disabled={isSubmitting}>Login</Button>
+      <Input
+        name="confirmPassword"
+        control={control}
+        label="CONFIRM PASSWORD"
+        placeholder="Confirm your password"
+        leftIconName="lock-outline"
+        secureTextEntry={true}
+      />
+      <View className="mt-8 flex-1 justify-between gap-6">
+        <Button disabled={isSubmitting}>Register</Button>
 
         <View>
           <Text className="mb-6 text-base text-gray-300">
-            Don't have an account?
+            Already have an account?
           </Text>
           <Button
             mode="outlined"
             iconName="arrow-forward"
-            onPress={() => navigation.navigate("Register")}
+            onPress={() => navigation.navigate("Login")}
             disabled={isSubmitting}
           >
-            Register
+            Login
           </Button>
         </View>
       </View>
