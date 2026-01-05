@@ -11,6 +11,7 @@ import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import clsx from "clsx";
 
 import { colors } from "@/shared/colors";
+import { ErrorMessage } from "../ErrorMessage";
 
 interface InputProps<T extends FieldValues> extends TextInputProps {
   control: Control<T>;
@@ -41,7 +42,6 @@ export function Input<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
-        console.log(error);
         return (
           <View className="w-full gap-2">
             {label && (
@@ -97,6 +97,7 @@ export function Input<T extends FieldValues>({
                 </TouchableOpacity>
               )}
             </TouchableOpacity>
+            {error && <ErrorMessage>{error.message}</ErrorMessage>}
           </View>
         );
       }}
