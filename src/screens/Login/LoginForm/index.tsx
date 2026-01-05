@@ -5,6 +5,8 @@ import { Button } from "@/components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./schema";
 
 export type LoginFormData = {
   email: string;
@@ -17,6 +19,7 @@ export function LoginForm() {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<LoginFormData>({
+    resolver: yupResolver(schema),
     defaultValues: {
       email: "",
       password: "",
@@ -25,6 +28,10 @@ export function LoginForm() {
 
   const navigation =
     useNavigation<StackNavigationProp<PublicStackParamsList>>();
+
+  const onSubmit = async (data: LoginFormData) => {
+    console.log(data);
+  };
 
   return (
     <View className="w-full flex-1 gap-4">
@@ -44,7 +51,9 @@ export function LoginForm() {
         secureTextEntry={true}
       />
       <View className="mt-8 min-h-[250px] flex-1 justify-between gap-6">
-        <Button disabled={isSubmitting}>Login</Button>
+        <Button disabled={isSubmitting} onPress={handleSubmit(onSubmit)}>
+          Login
+        </Button>
 
         <View>
           <Text className="mb-6 text-base text-gray-300">

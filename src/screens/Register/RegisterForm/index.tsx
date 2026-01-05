@@ -5,6 +5,8 @@ import { Button } from "@/components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./schema";
 
 export type RegisterFormData = {
   email: string;
@@ -19,6 +21,7 @@ export function RegisterForm() {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<RegisterFormData>({
+    resolver: yupResolver(schema),
     defaultValues: {
       email: "",
       name: "",
@@ -29,6 +32,10 @@ export function RegisterForm() {
 
   const navigation =
     useNavigation<StackNavigationProp<PublicStackParamsList>>();
+
+  const onSubmit = async (data: RegisterFormData) => {
+    console.log(data);
+  };
 
   return (
     <View className="w-full flex-1 gap-4">
@@ -63,7 +70,9 @@ export function RegisterForm() {
         secureTextEntry={true}
       />
       <View className="mt-8 flex-1 justify-between gap-6">
-        <Button disabled={isSubmitting}>Register</Button>
+        <Button disabled={isSubmitting} onPress={handleSubmit(onSubmit)}>
+          Register
+        </Button>
 
         <View>
           <Text className="mb-6 text-base text-gray-300">
