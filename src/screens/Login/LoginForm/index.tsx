@@ -1,6 +1,7 @@
 import { View } from "react-native";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/Input";
+import { Button } from "@/components/Button";
 
 export type LoginFormData = {
   email: string;
@@ -36,6 +37,7 @@ export function LoginForm() {
         leftIconName="lock-outline"
         secureTextEntry={true}
       />
+      <Button iconName="arrow-forward">Login</Button>
     </View>
   );
 }
