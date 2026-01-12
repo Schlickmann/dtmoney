@@ -53,8 +53,8 @@ export function LoginForm() {
         label="EMAIL"
         placeholder="email@example.com"
         leftIconName="mail-outline"
-        autoCapitalize="none"
         autoCorrect={false}
+        autoCapitalize="none"
       />
       <Input
         name="password"
@@ -63,6 +63,8 @@ export function LoginForm() {
         placeholder="Your password"
         leftIconName="lock-outline"
         secureTextEntry={true}
+        autoCorrect={false}
+        autoCapitalize="none"
       />
       <View className="mt-8 min-h-[250px] flex-1 justify-between gap-6">
         <Button disabled={isSubmitting} onPress={handleSubmit(onSubmit)}>

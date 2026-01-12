@@ -27,14 +27,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function handleAuth(params: LoginFormData) {
     const { token, user } = await authService.authenticate(params);
 
-    console.log(">>>", user, token);
-
     setUser(user);
     setToken(token);
   }
 
   async function handleRegister(params: RegisterFormData) {
-    console.log(params);
+    const { token, user } = await authService.register(params);
+
+    setUser(user);
+    setToken(token);
   }
 
   function handleLogout() {
