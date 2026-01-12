@@ -1,12 +1,14 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { LoginFormData } from "@/screens/Login/LoginForm";
 import { RegisterFormData } from "@/screens/Register/RegisterForm";
+import * as authService from "@/shared/services/dt-money/auth.service";
+import { IUser } from "@/shared/interfaces/https/user-interface";
 
 type AuthContextType = {
-  user: null;
+  user: IUser | null;
   token: string | null;
-  handleAuth: (params: LoginFormData) => void;
-  handleRegister: (params: RegisterFormData) => void;
+  handleAuth: (params: LoginFormData) => Promise<void>;
+  handleRegister: (params: RegisterFormData) => Promise<void>;
   handleLogout: () => void;
 };
 
@@ -19,11 +21,16 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
   async function handleAuth(params: LoginFormData) {
-    console.log(params);
+    const { token, user } = await authService.authenticate(params);
+
+    console.log(">>>", user, token);
+
+    setUser(user);
+    setToken(token);
   }
 
   async function handleRegister(params: RegisterFormData) {
@@ -31,7 +38,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   function handleLogout() {
-    console.log("logout");
+    setUser(null);
+    setToken(null);
   }
 
   const value = {

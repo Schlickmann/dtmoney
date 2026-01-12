@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -7,6 +7,8 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
+import { useAuth } from "@/context/AuthContext";
+import { AxiosError } from "axios";
 
 export type LoginFormData = {
   email: string;
@@ -26,11 +28,21 @@ export function LoginForm() {
     },
   });
 
+  const { handleAuth } = useAuth();
+
   const navigation =
     useNavigation<StackNavigationProp<PublicStackParamsList>>();
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log(data);
+    try {
+      await handleAuth(data);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.error(error.response?.data);
+
+        Alert.alert("Error", error.response?.data.message);
+      }
+    }
   };
 
   return (
@@ -41,6 +53,8 @@ export function LoginForm() {
         label="EMAIL"
         placeholder="email@example.com"
         leftIconName="mail-outline"
+        autoCapitalize="none"
+        autoCorrect={false}
       />
       <Input
         name="password"
