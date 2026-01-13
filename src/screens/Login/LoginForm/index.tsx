@@ -1,4 +1,4 @@
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -8,7 +8,8 @@ import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
 import { useAuth } from "@/context/AuthContext";
-import { AxiosError } from "axios";
+import { useNotification } from "@/context/NotificationContext";
+import { AppError } from "@/shared/helpers/AppError";
 
 export type LoginFormData = {
   email: string;
@@ -29,6 +30,7 @@ export function LoginForm() {
   });
 
   const { handleAuth } = useAuth();
+  const { notify } = useNotification();
 
   const navigation =
     useNavigation<StackNavigationProp<PublicStackParamsList>>();
@@ -37,8 +39,11 @@ export function LoginForm() {
     try {
       await handleAuth(data);
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.error(error.response?.data);
+      if (error instanceof AppError) {
+        notify({
+          message: error.message,
+          messageType: "error",
+        });
       }
     }
   };

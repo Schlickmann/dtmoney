@@ -1,4 +1,4 @@
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -7,8 +7,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
-import { AxiosError } from "axios";
 import { useAuth } from "@/context/AuthContext";
+import { useNotification } from "@/context/NotificationContext";
+import { AppError } from "@/shared/helpers/AppError";
 
 export type RegisterFormData = {
   email: string;
@@ -33,7 +34,7 @@ export function RegisterForm() {
   });
 
   const { handleRegister } = useAuth();
-
+  const { notify } = useNotification();
   const navigation =
     useNavigation<StackNavigationProp<PublicStackParamsList>>();
 
@@ -41,11 +42,11 @@ export function RegisterForm() {
     try {
       await handleRegister(data);
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.error(error.response?.data);
-
-        Alert.alert("Error", error.response?.data.message);
-      }
+      if (error instanceof AppError) {
+        notify({
+        message: error.message,
+        messageType: "error",
+      });
     }
   };
 
