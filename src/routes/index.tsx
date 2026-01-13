@@ -1,18 +1,24 @@
+import { useCallback, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { PublicRoutes } from "./PublicRoutes";
 import { PrivateRoutes } from "./PrivateRoutes";
-import { useCallback, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { Loading } from "@/screens/Loading";
 
 export const NavigationRoutes = () => {
-  const { user, token } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const { user, token, loadStoredAuthData } = useAuth();
 
   const Routes = useCallback(() => {
+    if (isLoading) {
+      return <Loading setIsLoading={setIsLoading} />;
+    }
+
     if (user && token) {
       return <PrivateRoutes />;
     }
     return <PublicRoutes />;
-  }, [user, token]);
+  }, [user, token, isLoading]);
 
   return (
     <NavigationContainer>

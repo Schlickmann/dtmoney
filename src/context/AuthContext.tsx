@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoginFormData } from "@/screens/Login/LoginForm";
 import { RegisterFormData } from "@/screens/Register/RegisterForm";
 import * as authService from "@/shared/services/dt-money/auth.service";
@@ -10,6 +11,7 @@ type AuthContextType = {
   handleAuth: (params: LoginFormData) => Promise<void>;
   handleRegister: (params: RegisterFormData) => Promise<void>;
   handleLogout: () => void;
+  loadStoredAuthData: () => Promise<string | null>;
 };
 
 type AuthProviderProps = {
@@ -26,6 +28,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function handleAuth(params: LoginFormData) {
     const { token, user } = await authService.authenticate(params);
+    await AsyncStorage.setItem(
+      "@dtMoney:auth",
+      JSON.stringify({ user, token })
+    );
 
     setUser(user);
     setToken(token);
@@ -33,12 +39,28 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function handleRegister(params: RegisterFormData) {
     const { token, user } = await authService.register(params);
+    await AsyncStorage.setItem(
+      "@dtMoney:auth",
+      JSON.stringify({ user, token })
+    );
 
     setUser(user);
     setToken(token);
   }
 
-  function handleLogout() {
+  async function loadStoredAuthData() {
+    const authData = await AsyncStorage.getItem("@dtMoney:auth");
+    if (authData) {
+      const { user, token } = JSON.parse(authData);
+      setUser(user);
+      setToken(token);
+    }
+
+    return authData;
+  }
+
+  async function handleLogout() {
+    await AsyncStorage.clear();
     setUser(null);
     setToken(null);
   }
@@ -49,6 +71,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     handleAuth,
     handleRegister,
     handleLogout,
+    loadStoredAuthData,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
