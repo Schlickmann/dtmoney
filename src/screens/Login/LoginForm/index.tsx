@@ -8,8 +8,7 @@ import { PublicStackParamsList } from "@/routes/PublicRoutes";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./schema";
 import { useAuth } from "@/context/AuthContext";
-import { useNotification } from "@/context/NotificationContext";
-import { AppError } from "@/shared/helpers/AppError";
+import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
 
 export type LoginFormData = {
   email: string;
@@ -30,7 +29,7 @@ export function LoginForm() {
   });
 
   const { handleAuth } = useAuth();
-  const { notify } = useNotification();
+  const { handleError } = useErrorHandler();
 
   const navigation =
     useNavigation<StackNavigationProp<PublicStackParamsList>>();
@@ -39,12 +38,7 @@ export function LoginForm() {
     try {
       await handleAuth(data);
     } catch (error) {
-      if (error instanceof AppError) {
-        notify({
-          message: error.message,
-          messageType: "error",
-        });
-      }
+      handleError(error, "An error occurred while logging in");
     }
   };
 
