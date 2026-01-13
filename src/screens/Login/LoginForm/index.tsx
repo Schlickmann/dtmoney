@@ -39,8 +39,6 @@ export function LoginForm() {
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error.response?.data);
-
-        Alert.alert("Error", error.response?.data.message);
       }
     }
   };
