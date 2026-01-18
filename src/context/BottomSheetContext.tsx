@@ -56,7 +56,7 @@ export function BottomSheetProvider({ children }: { children: ReactNode }) {
       {children}
       {visible && (
         <TouchableWithoutFeedback onPress={closeBottomSheet}>
-          <View className="z-1 absolute bottom-0 left-0 right-0 top-0 bg-black/70" />
+          <View className="z-1 absolute inset-0 bg-black/70" />
         </TouchableWithoutFeedback>
       )}
       <BottomSheet

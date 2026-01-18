@@ -3,13 +3,14 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/shared/colors";
 import { useAuth } from "@/context/AuthContext";
 import { useBottomSheet } from "@/context/BottomSheetContext";
+import { NewTransaction } from "../NewTransaction";
 
 export function AppHeader() {
   const { handleLogout } = useAuth();
   const { openBottomSheet } = useBottomSheet();
 
   const handleNewTransaction = () => {
-    openBottomSheet(<Text>New Transaction</Text>, 0);
+    openBottomSheet(<NewTransaction />, 0);
   };
 
   return (
