@@ -6,6 +6,7 @@ import { colors } from "@/shared/colors";
 import { useBottomSheet } from "@/context/BottomSheetContext";
 import CurrencyInput from "react-native-currency-input";
 import { SelectType } from "../SelectType";
+import { SelectCategoryModal } from "../SelectCategoryModal";
 
 export function NewTransaction() {
   const [transaction, setTransaction] = useState<ICreateTransactionRequest>({
@@ -17,8 +18,11 @@ export function NewTransaction() {
 
   const { closeBottomSheet } = useBottomSheet();
 
-  const setTransactionData = (key: keyof ICreateTransactionRequest, value: string | number) => {
-    setTransaction(prevData => ({
+  const setTransactionData = (
+    key: keyof ICreateTransactionRequest,
+    value: string | number
+  ) => {
+    setTransaction((prevData) => ({
       ...prevData,
       [key]: value,
     }));
@@ -26,11 +30,14 @@ export function NewTransaction() {
 
   return (
     <View className="px-8 py-5">
-      <TouchableOpacity className="w-full flex-row items-center justify-between" onPress={closeBottomSheet}>
+      <TouchableOpacity
+        className="w-full flex-row items-center justify-between"
+        onPress={closeBottomSheet}
+      >
         <Text className="text-xl font-bold text-white">New Transaction</Text>
         <MaterialIcons name="close" color={colors.gray[700]} size={20} />
       </TouchableOpacity>
-      <View className="flex-1 mt-8 mb-8">
+      <View className="mb-8 mt-8 flex-1">
         <TextInput
           placeholder="Description"
           placeholderTextColor={colors.gray[700]}
@@ -48,7 +55,14 @@ export function NewTransaction() {
           precision={2}
           minValue={0}
         />
-        <SelectType typeId={transaction.typeId} setTransactionType={(typeId) => setTransactionData("typeId", typeId)} />
+        <SelectCategoryModal
+          selectedCategory={transaction.categoryId}
+          onSelectCategory={(categoryId) => setTransactionData("categoryId", categoryId)}
+        />
+        <SelectType
+          typeId={transaction.typeId}
+          setTransactionType={(typeId) => setTransactionData("typeId", typeId)}
+        />
       </View>
     </View>
   );

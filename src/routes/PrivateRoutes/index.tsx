@@ -3,7 +3,7 @@ import { Home } from "@/screens/Home";
 
 export type PrivateStackParamsList = {
   Home: undefined;
-}
+};
 
 export const PrivateRoutes = () => {
   const PrivateStack = createStackNavigator<PrivateStackParamsList>();
@@ -11,5 +11,5 @@ export const PrivateRoutes = () => {
     <PrivateStack.Navigator screenOptions={{ headerShown: false }}>
       <PrivateStack.Screen name="Home" component={Home} />
     </PrivateStack.Navigator>
-  )
-} 
+  );
+};

@@ -17,7 +17,7 @@ export function Home() {
     } catch (error) {
       handleError(error);
     }
-  }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -25,7 +25,7 @@ export function Home() {
     }
 
     fetchData();
-  }, [])
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-background-primary">

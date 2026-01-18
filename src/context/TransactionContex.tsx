@@ -5,7 +5,7 @@ import * as transactionService from "@/shared/services/dt-money/transaction.serv
 export type TransactionContextType = {
   fetchCategories: () => Promise<void>;
   categories: ITransactionCategory[];
-}
+};
 
 export const TransactionContext = createContext({} as TransactionContextType);
 
@@ -16,7 +16,7 @@ export function TransactionProvider({ children }: { children: ReactNode }) {
     const data = await transactionService.getTransactionCategories();
 
     setCategories(data);
-  }
+  };
 
   return (
     <TransactionContext.Provider value={{ categories, fetchCategories }}>
