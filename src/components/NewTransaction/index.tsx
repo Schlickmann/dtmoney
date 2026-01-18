@@ -7,8 +7,14 @@ import { useBottomSheet } from "@/context/BottomSheetContext";
 import CurrencyInput from "react-native-currency-input";
 import { SelectType } from "../SelectType";
 import { SelectCategoryModal } from "../SelectCategoryModal";
+import { transactionSchema } from "./schema";
+import * as yup from "yup";
+import { Button } from "../Button";
+
+type ValidationErrors = Record<keyof ICreateTransactionRequest, string>;
 
 export function NewTransaction() {
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>();
   const [transaction, setTransaction] = useState<ICreateTransactionRequest>({
     typeId: 0,
     categoryId: 0,
@@ -27,6 +33,24 @@ export function NewTransaction() {
       [key]: value,
     }));
   };
+
+  const handleCreateTransaction = async () => {
+    try {
+      await transactionSchema.validate(transaction, { abortEarly: false });
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        const errors = {} as ValidationErrors;
+
+        error.inner.forEach((err) => {
+          if (err.path) {
+            errors[err.path as keyof ICreateTransactionRequest] = err.message;
+          }
+        });
+
+        setValidationErrors(errors);
+      }
+    }
+  }
 
   return (
     <View className="px-8 py-5">
@@ -63,6 +87,12 @@ export function NewTransaction() {
           typeId={transaction.typeId}
           setTransactionType={(typeId) => setTransactionData("typeId", typeId)}
         />
+
+        <View className="my-4">
+          <Button onPress={handleCreateTransaction}>
+            <Text>Add</Text>
+          </Button>
+        </View>
       </View>
     </View>
   );
