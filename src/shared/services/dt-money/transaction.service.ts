@@ -1,4 +1,5 @@
 import { dtMoneyApi } from "@/shared/api/dt-money";
+import { ICreateTransactionRequest } from "@/shared/interfaces/https/create-transaction-request";
 import { ITransactionCategory } from "@/shared/interfaces/https/transaction-categories";
 
 export const getTransactionCategories = async (): Promise<
@@ -8,4 +9,10 @@ export const getTransactionCategories = async (): Promise<
     "/transaction/categories"
   );
   return data;
+};
+
+export const createTransaction = async (
+  body: ICreateTransactionRequest
+): Promise<void> => {
+  await dtMoneyApi.post("/transaction", body);
 };
