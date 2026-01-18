@@ -6,16 +6,19 @@ import { BottomSheetProvider } from "@/context/BottomSheetContext";
 
 import "./src/styles/global.css";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { TransactionProvider } from "@/context/TransactionContex";
 
 export default function App() {
   return (
     <GestureHandlerRootView className="flex-1">
       <NotificationProvider>
         <AuthProvider>
-          <BottomSheetProvider>
-            <NavigationRoutes />
-            <SnackBar />
-          </BottomSheetProvider>
+          <TransactionProvider>
+            <BottomSheetProvider>
+              <NavigationRoutes />
+              <SnackBar />
+            </BottomSheetProvider>
+          </TransactionProvider>
         </AuthProvider>
       </NotificationProvider>
     </GestureHandlerRootView>
