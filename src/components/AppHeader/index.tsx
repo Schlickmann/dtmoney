@@ -14,7 +14,7 @@ export function AppHeader() {
   };
 
   return (
-    <View className="w-full flex-row items-center justify-between p-8">
+    <View className="w-full flex-row items-center justify-between p-8 bg-background-primary">
       <View>
         <Image
           source={require("@/assets/Logo.png")}
