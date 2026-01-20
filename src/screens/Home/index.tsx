@@ -19,19 +19,22 @@ export function Home() {
 
   useEffect(() => {
     async function fetchData() {
-      await handleGetCategories();
-      await fetchTransactions();
+      await Promise.all([
+        handleGetCategories(),
+        fetchTransactions(),
+      ]);
     }
 
     fetchData();
   }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-background-secondary">
+    <SafeAreaView className="flex-1 bg-background-primary">
       <FlatList
         ListHeaderComponent={ListHeader}
         data={[]}
         renderItem={({ item }) => <></>}
+        className="bg-background-secondary"
       />
     </SafeAreaView>
   );
